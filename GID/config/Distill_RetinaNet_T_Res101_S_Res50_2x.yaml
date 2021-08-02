@@ -1,0 +1,59 @@
+INPUT:
+  MIN_SIZE_TRAIN: (800,)
+MODEL:
+  META_ARCHITECTURE: "DistillGID"
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+DISTILL:
+  TEACHER_YAML: "config/teacher/RetinaNet_Res101_1x_smooth_l1.yaml"
+  STUDENT_YAML: "config/student/RetinaNet_2x_smooth_l1.yaml"
+  GID:
+    GI_MODE: "ALL"              # in ["all", "pos", "semi_pos", "neg"]
+    GI_NMS_THRESH: 0.3
+    GI_PRE_NMS_TOPK: 3000
+    GI_POST_NMS_TOPK: 10
+    IOU_THRESHOLDS: [0.3, 0.7]  # For Response Distillation mask
+    IOU_LABELS: [0, -1, 1]      # For Response Distillation mask
+    ROI:
+      POOLER_RESOLUTION: 10
+      POOLER_SAMPLING_RATIO: 2
+      POOLER_TYPE: "ROIAlignV2"
+    ADAPTER:
+      TE_NAMES: ["p3", "p4", "p5", "p6", "p7"]
+      ST_NAMES: ["p3", "p4", "p5", "p6", "p7"]
+      SHARE_WEIGHTS: True
+      KERNEL_SIZE: 3
+  LOSS:
+    GT_WEIGHT: 1.0
+    FEATURE:
+      TE_NAMES: ["p3", "p4", "p5", "p6", "p7"]  # in ["stem", "res2", ..., "res5", "p3", ..., "p7"]
+      ST_NAMES: ["p3", "p4", "p5", "p6", "p7"]  # in ["stem", "res2", ..., "res5", "p3", ..., "p7"]
+      MODE: "L2"                                # in ["L1", "L2"]
+      SMOOTH_L1_BETA: 0.0                       # only valid when MODE is "L1"
+      WEIGHT: 0.0005
+    RELATION:
+      TE_NAMES: ["p3", "p4", "p5", "p6", "p7"]  # in ["stem", "res2", ..., "res5", "p3", ..., "p7"]
+      ST_NAMES: ["p3", "p4", "p5", "p6", "p7"]  # in ["stem", "res2", ..., "res5", "p3", ..., "p7"]
+      MODE: "IRKD"                              # in ["IRKD"]
+      DIST_MODE: "L2"                           # in ["L1", "L2"]
+      SMOOTH_L1_BETA: 1.0                       # L1 loss param of relation distance, not depend on DIST_MODE
+      WEIGHT: 40
+    RESPONSE_CLS:
+      TE_NAMES: ["cls_logits"]                  # in ["cls_logits"]
+      ST_NAMES: ["cls_logits"]                  # in ["cls_logits"]
+      MODE: "BCE"                               # in ["BCE", "L1", "L2"]
+      SMOOTH_L1_BETA: 0.0                       # only valid when MODE is "L1"
+      WEIGHT: 0.1
+    RESPONSE_REG:
+      TE_NAMES: ["reg_deltas"]                  # in ["reg_deltas"]
+      ST_NAMES: ["reg_deltas"]                  # in ["reg_deltas"]
+      MODE: "L1"                                # in ["bce", "L1", "L2"]
+      SMOOTH_L1_BETA: 0.0                       # only valid when MODE is "L1"
+      WEIGHT: 1.0
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.01
+  STEPS: (120000, 160000)
+  MAX_ITER: 180000
+OUTPUT_DIR: "output_retina_res101_Res50_2x"

@@ -1,0 +1,17 @@
+_BASE_: "../Base-RetinaNet.yaml"
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+  # OUTPUTS is used for distillation,
+  # should in ["images", "stem", "res2", ..., "res5", "p2", "p3", ..., "p7",
+  #            "proposal", "cls_logits", "reg_deltas", "anchors",
+  #            "gt_labels", "gt_boxes", "losses", "results"]
+  OUTPUTS: ["images", "p3", "p4", "p5", "p6", "p7", "gt_labels", "losses", "proposal", "cls_logits", "reg_deltas", "anchors"]
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.01  # Note that RetinaNet uses a different default learning rate
+  STEPS: (120000, 160000)
+  MAX_ITER: 180000
+OUTPUT_DIR: "output_2x_multi-scale"

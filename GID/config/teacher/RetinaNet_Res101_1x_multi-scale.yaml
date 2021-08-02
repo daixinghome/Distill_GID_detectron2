@@ -1,0 +1,11 @@
+_BASE_: "../Base-RetinaNet.yaml"
+MODEL:
+  WEIGHTS: "../RetinaNet_Res101/output_1x_multi-scale/model_final.pth"
+  RESNETS:
+    DEPTH: 101
+  # OUTPUTS is used for distillation,
+  # should in ["images", "stem", "res2", ..., "res5", "p2", "p3", ..., "p7",
+  #            "proposal", "cls_logits", "reg_deltas", "anchors",
+  #            "gt_labels", "gt_boxes", "losses", "results"]
+  OUTPUTS: ["images", "p3", "p4", "p5", "p6", "p7", "gt_labels", "proposal", "cls_logits", "reg_deltas", "anchors"]
+OUTPUT_DIR: "output_1x_multi-scale-scale"
