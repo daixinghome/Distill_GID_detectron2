@@ -6,14 +6,14 @@ DATASETS:
   TRAIN: ("coco_2017_train",)
   TEST: ("coco_2017_val",)
 DISTILL:
-  TEACHER_YAML: "config/teacher/RetinaNet_Res101_1x_multi-scale.yaml"
+  TEACHER_YAML: "config/teacher/RetinaNet_Res101_1x_smooth_l1.yaml"
   STUDENT_YAML: "config/student/RetinaNet_2x_smooth_l1.yaml"
   GID:
     GI_MODE: "ALL"              # in ["all", "pos", "semi_pos", "neg"]
     GI_NMS_THRESH: 0.3
     GI_PRE_NMS_TOPK: 3000
     GI_POST_NMS_TOPK: 10
-    IOU_THRESHOLDS: [0.3, 0.7]  # For Response Distillation mask
+    IOU_THRESHOLDS: [0.4, 0.5]  # For Response Distillation mask
     IOU_LABELS: [0, -1, 1]      # For Response Distillation mask
     ROI:
       POOLER_RESOLUTION: 10
@@ -49,11 +49,11 @@ DISTILL:
       TE_NAMES: ["reg_deltas"]                  # in ["reg_deltas"]
       ST_NAMES: ["reg_deltas"]                  # in ["reg_deltas"]
       MODE: "L1"                                # in ["bce", "L1", "L2"]
-      SMOOTH_L1_BETA: 0.0                       # only valid when MODE is "L1"
+      SMOOTH_L1_BETA: 0.1                       # only valid when MODE is "L1"
       WEIGHT: 1.0
 SOLVER:
   IMS_PER_BATCH: 16
   BASE_LR: 0.01
   STEPS: (120000, 160000)
   MAX_ITER: 180000
-OUTPUT_DIR: "output_retina_res101_Res50_2x_T_aug"
+OUTPUT_DIR: "output_retina_res101_Res50_2x_L1Smo"
