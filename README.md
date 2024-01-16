@@ -14,7 +14,7 @@ Paper Link: [General Instance Distillation for Object Detection](https://openacc
 ### Step1. Clone repository
 
 ```
-git clone gitlab@git.garena.com:xing.dai/ppl_algo.git
+https://github.com/daixinghome/Distill_GID_detectron2.git
 ```
 
 ### Step2. Download COCO Dataset
