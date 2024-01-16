@@ -1,5 +1,5 @@
 INPUT:
-  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN: (800,)
 MODEL:
   META_ARCHITECTURE: "DistillGID"
 DATASETS:
@@ -7,13 +7,13 @@ DATASETS:
   TEST: ("coco_2017_val",)
 DISTILL:
   TEACHER_YAML: "config/teacher/RetinaNet_Res101_1x_multi-scale.yaml"
-  STUDENT_YAML: "config/student/RetinaNet_2x_multi-scale.yaml"
+  STUDENT_YAML: "config/student/RetinaNet_2x.yaml"
   GID:
     GI_MODE: "ALL"              # in ["all", "pos", "semi_pos", "neg"]
     GI_NMS_THRESH: 0.3
     GI_PRE_NMS_TOPK: 3000
     GI_POST_NMS_TOPK: 10
-    IOU_THRESHOLDS: [0.3, 0.7]  # For Response Distillation mask
+    IOU_THRESHOLDS: [0.4, 0.5]  # For Response Distillation mask
     IOU_LABELS: [0, -1, 1]      # For Response Distillation mask
     ROI:
       POOLER_RESOLUTION: 10
@@ -56,4 +56,4 @@ SOLVER:
   BASE_LR: 0.01
   STEPS: (120000, 160000)
   MAX_ITER: 180000
-OUTPUT_DIR: "output_retina_res101_Res50_2x_T_aug_S_aug"
+OUTPUT_DIR: "output_retina_res101_Res50_2x_L1_T_L1_aug"

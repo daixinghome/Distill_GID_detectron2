@@ -10,4 +10,4 @@ SOLVER:
   BASE_LR: 0.01  # Note that RetinaNet uses a different default learning rate
   STEPS: (120000, 160000)
   MAX_ITER: 180000
-OUTPUT_DIR: "output_1x"
+OUTPUT_DIR: "output_2x"

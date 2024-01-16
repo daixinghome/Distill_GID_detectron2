@@ -1,0 +1,13 @@
+_BASE_: "../Base-RetinaNet.yaml"
+INPUT:
+  MIN_SIZE_TRAIN: (800,)
+MODEL:
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  RESNETS:
+    DEPTH: 50
+  # OUTPUTS is used for distillation,
+  # should in ["images", "stem", "res2", ..., "res5", "p2", "p3", ..., "p7",
+  #            "proposal", "cls_logits", "reg_deltas", "anchors",
+  #            "gt_labels", "gt_boxes", "losses", "results"]
+  OUTPUTS: ["images", "p3", "p4", "p5", "p6", "p7", "gt_labels", "losses", "proposal", "cls_logits", "reg_deltas", "anchors"]
+OUTPUT_DIR: "output_2x"
